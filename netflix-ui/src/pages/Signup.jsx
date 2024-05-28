@@ -17,9 +17,21 @@ export default function Signup() {
     try {
 
       const { email, password } = formValues;
-      await createUserWithEmailAndPassword(firebaseAuth, email, password)
-      toast("Success");
-    } catch (err) {
+      const result = await createUserWithEmailAndPassword(firebaseAuth, email, password)
+      if (result) {
+        toast.success('User Created Successfully', {
+          position: "top-right", // Optional: Toast position
+          autoClose: 5000,  // Optional: Auto-close in milliseconds
+          hideProgressBar: false, // Optional: Hide progress bar
+          closeOnClick: true,   // Optional: Close on click
+          pauseOnHover: true,   // Optional: Pause on hover
+          draggable: true,     // Optional: Make toast draggable
+          theme: "light",    // Optional: Theme (light or dark)
+        });
+      }
+      console.log('check result', result);
+    }
+    catch (err) {
       console.log(err);
     }
   }
@@ -30,6 +42,8 @@ export default function Signup() {
   //   } 
 
   // })
+  console.log('check form value', formValues)
+
   return (
     <Container >
       <BackgroundImage showPassword={showPassword} />
@@ -47,7 +61,10 @@ export default function Signup() {
               placeholder='Email Address'
               name='email'
               value={formValues.email}
-              onChange={(e) => setFormValues({
+              onChange={(e) => setFormValues(
+
+                {
+
                 ...formValues,
                 [e.target.name]: e.target.value,
               })}
@@ -60,9 +77,14 @@ export default function Signup() {
                 name='password'
                 value={formValues.password}
                 onChange={(e) => setFormValues({
+                  
                   ...formValues,
+                  
+
                   [e.target.name]: e.target.value,
-                })}
+                
+                })
+              }
 
               />
 
@@ -90,6 +112,8 @@ const Container = styled.div`
         background-color: rgb(0,0,0,0.5);
         height: 100vh;
         width: 100vw;
+
+        
         display: grid;
         grid-template-rows:15vh 85vh;
     }

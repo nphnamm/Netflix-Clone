@@ -9,11 +9,14 @@ import TVShow from './pages/TVShow';
 import UserLiked from './pages/UserLiked';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from 'react-toastify';
+import Detail from './pages/Detail';
+// import Detail from './pages/Detail';
 
 
 
 export default function App() {
   return (
+    
     <BrowserRouter>
       <ToastContainer
         position="bottom-right"
@@ -31,10 +34,11 @@ export default function App() {
       <Routes>
         <Route exact path='/login' element={<Login />} />
         <Route exact path='/signup' element={<Signup />} />
-        <Route exact path='player' element={<Player />} />
+        <Route exact path='/player/:id' element={<Player />} />
         <Route exact path='/movies' element={<Movies />} />
         <Route exact path='/tcv' element={<TVShow />} />
         <Route exact path='/mylist' element={<UserLiked />} />
+        <Route exact path='/detail/:id' element={<Detail />} />
 
         <Route exact path='/' element={<Netflix />} />
 

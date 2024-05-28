@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import video from "../assets/video.mp4";
 import { IoPlayCircleSharp } from "react-icons/io5";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -13,12 +13,14 @@ import { firebaseAuth } from '../utils/firebase-config';
 import { useDispatch } from 'react-redux';
 import { removeFromLikedMovie } from '../store';
 import { toast, ToastContainer } from "react-toastify";
+import { FaPlay } from 'react-icons/fa';
 
 export default React.memo(function Card({ index, movieData, isLiked = false }) {
     const [isHovered, setIsHovered] = useState(false);
     const navigate = useNavigate();
     const [email, setEmail] = useState(undefined);
     const dispatch = useDispatch();
+    
     onAuthStateChanged(firebaseAuth, (currentUser) => {
         if (currentUser) {
             // console.log('check user',currentUser);
@@ -39,6 +41,7 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                     hideProgressBar: false, // Optional: Hide progress bar
                     closeOnClick: true,   // Optional: Close on click
                     pauseOnHover: true,   // Optional: Pause on hover
+
                     draggable: true,     // Optional: Make toast draggable
                     theme: "light",    // Optional: Theme (light or dark)
                 });
@@ -77,7 +80,12 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                 console.error("Promise rejected with reason:", reason);
             });
     }
-    // console.log('check movie data:', movieData.id);
+    const handlePlayClick = () => {
+        // Pass movie data to Detail component using useNavigate
+        const propsMovie = movieData;
+        navigate('/detail', { propsMovie });
+    };
+    //console.log('check movie data:', movieData.id);
     return (
         <Container onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
             <img src={`https://image.tmdb.org/t/p/w500${movieData.image}`} alt='Movie Poster' />
@@ -90,27 +98,20 @@ export default React.memo(function Card({ index, movieData, isLiked = false }) {
                                 alt='movie'
                                 onClick={() => navigate("/player")}
                             />
-                            <video
-                                src={video}
-                                autoPlay
-                                loop
-                                muted
-                                onClick={() => navigate("/player")}
-
-                            />
+                       
 
 
 
                         </div>
                         <div className='info-container flex column'>
-                            <h3 className='name' onClick={() => navigate("/player")}>
+                            <h3 className='name' onClick={() => handlePlayClick()}>
                                 {movieData.name}
                             </h3>
                             <div className="icons flex j-between">
                                 <div className="controls flex">
-                                    <IoPlayCircleSharp
-                                        onClick={() => navigate("/player")}
-                                        title='play' />
+                                <Link  to={`/detail/${movieData.id}`} className=''>
+                                    <FaPlay />
+                                </Link>
                                     <RiThumbUpFill title='Like' />
                                     <RiThumbDownFill title='Dislike' />
                                     {isLiked ? (

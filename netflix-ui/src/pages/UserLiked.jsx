@@ -35,7 +35,7 @@ export default function UserLiked() {
             dispatch(getUserLikedMovies(email));
         }
     }, [email])
-    console.log('check movie', movies);
+    //console.log('check movie', movies);
     // useEffect(() => {
     //     if (genresLoaded) {
     //         dispatch(fetchMovies({ genres, type: "movie" }))
